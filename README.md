@@ -7,7 +7,7 @@
 ## 步驟 1: 下載應用程式
 
 1. 點擊以下鏈接下載應用程式的壓縮檔：
-   - [下載 main.app.zip](https://github.com/ap311036/fantastic-robot/releases/download/v1.1.0/main.zip)
+   - [下載 main.app.zip](https://github.com/ap311036/fantastic-robot/releases/download/v1.1.0/main.app.zip)
 
 ## 步驟 2: 解壓縮應用程式
 
