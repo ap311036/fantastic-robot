@@ -1,4 +1,5 @@
 # main.py
+import sys
 import time
 import rumps
 import webbrowser
@@ -31,8 +32,10 @@ logging.basicConfig(
     level=logging.INFO,  # 可以根據需要改為 DEBUG 或 ERROR 等
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     handlers=[
-        logging.FileHandler("app.log"),  # 將日誌輸出到 app.log 文件
-        logging.StreamHandler(),  # 同時在控制台輸出日誌
+        logging.FileHandler(
+            "app.log", encoding="utf-8"
+        ),  # 將日誌輸出到 app.log 文件，並設置編碼為 utf-8
+        logging.StreamHandler(sys.stdout),  # 在控制台輸出日誌，並設置輸出到 stdout
     ],
 )
 

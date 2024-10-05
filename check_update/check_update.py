@@ -6,7 +6,7 @@ import shutil
 import sys
 import rumps
 from PyQt6 import QtWidgets, QtCore
-from config import CURRENT_VERSION, VERSION_CHECK_URL, UPDATE_URL
+from config import CURRENT_VERSION
 import AppKit
 
 
@@ -15,41 +15,43 @@ def focus_alert():
     app.activateIgnoringOtherApps_(True)
 
 
+def check_for_updates(current_version):
+    # GitHub API 的 URL，替換 {owner} 和 {repo} 為你的 GitHub 倉庫
+    owner = "ap311036"
+    repo = "fantastic-robot"
+    url = f"https://api.github.com/repos/{owner}/{repo}/releases/latest"
+    response = requests.get(url)
+    if response.status_code == 200:
+        latest_release = response.json()
+        latest_version = latest_release["tag_name"]
+        print(f"最新版本：{latest_version}")
+        print(f"當前版本：{current_version}")
+        if latest_version > current_version:
+            # 如果最新版本大於當前版本，返回更新訊息
+            return latest_release["assets"][0]["browser_download_url"], latest_version
+    return None, None
+
+
 def check_for_updates_and_download():
     try:
-        print("檢查更新...")
-        response = requests.get(VERSION_CHECK_URL)
-        response.raise_for_status()
+        download_url, latest_version = check_for_updates(CURRENT_VERSION)
 
-        latest_version = response.text.strip()
-        if latest_version != CURRENT_VERSION:
-            # 聚焦視窗
-            focus_alert()
-
-            # 顯示確認對話框，詢問用戶是否更新
-            user_response = rumps.alert(
-                title="新版本可用",
-                message=f"最新版本: {latest_version}\n即將下載並安裝更新。",
-                ok="確定",
-                cancel="取消",
-            )
-
-            if user_response == 1:  # 1 是“確定”按鈕的索引
-                download_update(UPDATE_URL)
-            else:
-                print("用戶選擇取消更新。")
+        if download_url:
+            print(f"發現新版本：{latest_version}，準備下載更新")
+            download_update(download_url, latest_version)
         else:
-            print("已經是最新版本。")
+            print("當前是最新版本")
+
     except requests.RequestException as e:
         print(f"檢查更新失敗: {e}")
 
 
-def download_update(update_url):
+def download_update(update_url, version):
     # 創建應用程序對象
     app = QtWidgets.QApplication(sys.argv)
 
     # 創建進度條對話框
-    progress_dialog = QtWidgets.QProgressDialog("下載中...", "取消", 0, 100)
+    progress_dialog = QtWidgets.QProgressDialog(f"新版本{version}下載中...", "取消", 0, 100)
     progress_dialog.setWindowTitle("更新下載")
     progress_dialog.setWindowModality(
         QtCore.Qt.WindowModality.WindowModal
@@ -124,7 +126,7 @@ def install_update(update_path):
         shutil.rmtree(extract_dir)
         os.remove(update_path)
 
-        rumps.alert("更新成功，應用程式即將重啟。")
+        rumps.alert("更新成功，懩用程式即將重啟。", "若無自動開啟，請手動開啟。")
         restart_app()
 
     except Exception as e:
