@@ -7,7 +7,7 @@
 ## 步驟 1: 下載應用程式
 
 1. 點擊以下鏈接下載應用程式的壓縮檔：
-   - [下載 main.app.zip](YOUR_DOWNLOAD_LINK)
+   - [下載 main.app.zip](https://github.com/ap311036/fantastic-robot/releases/download/v1.1.0/main.zip)
 
 ## 步驟 2: 解壓縮應用程式
 
@@ -41,13 +41,3 @@ macOS 會對從網路下載的應用程式自動加上 Quarantine 標記，這�
 如有任何問題，請隨時聯繫我們的支持團隊！
 
 謝謝您使用我們的應用程式！
-
-markdown
-複製程式碼
-
-### 使用方法：
-
-- 將以上內容複製到一個新的 Markdown 文件中，並保存為 `README.md`。
-- 在適當的位置替換 `YOUR_DOWNLOAD_LINK` 為實際的下載鏈接。
-
-如果你需要任何其他幫助或調整，隨時告訴我！
