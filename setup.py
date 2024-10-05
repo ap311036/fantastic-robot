@@ -1,6 +1,7 @@
 from struct import pack
 from setuptools import setup, find_packages
 from datetime import datetime
+from config import CURRENT_VERSION
 
 # 動態生成當前日期
 current_date = datetime.now().strftime("%Y-%m-%d")
@@ -35,10 +36,10 @@ OPTIONS = {
         "LSUIElement": True,
         "NSAppTransportSecurity": {"NSAllowsArbitraryLoads": True},
         "NSUserNotificationAlertStyle": "alert",  # 可以設置為 'banner' 或 'alert'
-        "CFBundleShortVersionString": "0.1.0",
+        "CFBundleShortVersionString": CURRENT_VERSION,
         "NSHumanReadableCopyright": "Snoop © 2024",
-        "CFBundleVersion": f"{current_date}-0.1.0",  # 動態生成的日期
-        "CFBundleShortVersionString": f"{current_date}-0.1.0",  # 動態生成的日期
+        "CFBundleVersion": f"{current_date}-{CURRENT_VERSION}",  # 動態生成的日期
+        "CFBundleShortVersionString": f"{current_date}-{CURRENT_VERSION}",  # 動態生成的日期
     },
 }
 

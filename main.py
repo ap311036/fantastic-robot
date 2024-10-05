@@ -72,10 +72,10 @@ def main():
 
     driver = setup_driver()
     try:
-        issue_url = login(driver, username, password, url)
+        login(driver, username, password, url)
         issue_url = create_issue(driver, environment_name, system_code, branch)
         # if grayscale:
-        #     # add_link(driver, environment_name, system_code)
+        #     add_link(driver, environment_name, system_code)
         #     check_jira_ticket_status(driver, environment_name)
         print("問題創建完成")
 
@@ -91,7 +91,7 @@ def main():
 class AwesomeStatusBarApp(rumps.App):
     def __init__(self):
         super(AwesomeStatusBarApp, self).__init__("LBTW")
-        self.menu = ["開單", None, "Delete Credential", "Silly button"]
+        self.menu = ["開單", "掛灰度單", None, "Delete Credential", "Silly button"]
 
     @rumps.clicked("開單")
     def prefs(self, _):
