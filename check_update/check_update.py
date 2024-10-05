@@ -37,8 +37,21 @@ def check_for_updates_and_download():
         download_url, latest_version = check_for_updates(CURRENT_VERSION)
 
         if download_url:
-            print(f"發現新版本：{latest_version}，準備下載更新")
-            download_update(download_url, latest_version)
+            # 聚焦視窗
+            focus_alert()
+
+            # 顯示確認對話框，詢問用戶是否更新
+            user_response = rumps.alert(
+                title="新版本可用",
+                message=f"最新版本: {latest_version}\n即將下載並安裝更新。",
+                ok="確定",
+                cancel="取消",
+            )
+
+            if user_response == 1:  # 1 是“確定”按鈕的索引
+                download_update(download_url, latest_version)
+            else:
+                print("用戶選擇取消更新。")
         else:
             print("當前是最新版本")
 
@@ -51,7 +64,9 @@ def download_update(update_url, version):
     app = QtWidgets.QApplication(sys.argv)
 
     # 創建進度條對話框
-    progress_dialog = QtWidgets.QProgressDialog(f"新版本{version}下載中...", "取消", 0, 100)
+    progress_dialog = QtWidgets.QProgressDialog(
+        f"新版本{version}下載中...", "取消", 0, 100
+    )
     progress_dialog.setWindowTitle("更新下載")
     progress_dialog.setWindowModality(
         QtCore.Qt.WindowModality.WindowModal
@@ -126,7 +141,7 @@ def install_update(update_path):
         shutil.rmtree(extract_dir)
         os.remove(update_path)
 
-        rumps.alert("更新成功，懩用程式即將重啟。", "若無自動開啟，請手動開啟。")
+        rumps.alert("更新成功，應用程式即將重啟。", "若無自動開啟，請手動開啟。")
         restart_app()
 
     except Exception as e:
