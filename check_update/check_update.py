@@ -1,4 +1,5 @@
 import stat
+import subprocess
 import requests
 import os
 import zipfile
@@ -120,7 +121,7 @@ def install_update(update_path):
         extracted_files = os.listdir(extract_dir)
         print(f"解壓後的檔案: {extracted_files}")
 
-        new_app_path = os.path.join(extract_dir, "main.app")
+        new_app_path = os.path.join(extract_dir, "fantastic-robot.app")
         if not os.path.exists(new_app_path):
             raise FileNotFoundError(f"未找到應用程式包: {new_app_path}")
 
@@ -134,12 +135,12 @@ def install_update(update_path):
 
         shutil.move(new_app_path, current_app_path)
 
-        executable_path = os.path.join(current_app_path, "Contents", "MacOS", "main")
-        set_permissions(executable_path)
-
         shutil.rmtree(backup_path)
         shutil.rmtree(extract_dir)
         os.remove(update_path)
+
+        executable_path = os.path.join(current_app_path, "Contents", "MacOS", "fantastic-robot")
+        set_permissions(executable_path)
 
         rumps.alert("更新成功，應用程式即將重啟。", "若無自動開啟，請手動開啟。")
         restart_app()
@@ -159,4 +160,22 @@ def set_permissions(executable_path):
 
 
 def restart_app():
-    os.execl(sys.executable, sys.executable, *sys.argv)
+    print("重新啟動應用程式")
+
+    # 获取当前应用程序路径
+    current_app_path = os.path.dirname(os.path.dirname(os.path.abspath(sys.argv[0])))
+
+    # 获取 start_app.sh 的动态路径
+    script_dir = os.path.dirname(os.path.abspath(__file__))  # 获取当前文件的目录
+    start_script_path = os.path.join(script_dir, "start_app.sh")  # 构造完整路径
+
+    # 创建 AppleScript 命令
+    applescript_command = f"""
+    do shell script "/bin/bash '{start_script_path}' '{current_app_path}'"
+    """
+
+    # 使用 subprocess 执行 AppleScript
+    subprocess.run(["osascript", "-e", applescript_command])
+
+    # 退出当前应用
+    sys.exit()
