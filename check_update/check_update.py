@@ -161,21 +161,5 @@ def set_permissions(executable_path):
 
 def restart_app():
     print("重新啟動應用程式")
-
-    # 获取当前应用程序路径
-    current_app_path = os.path.dirname(os.path.dirname(os.path.abspath(sys.argv[0])))
-
-    # 获取 start_app.sh 的动态路径
-    script_dir = os.path.dirname(os.path.abspath(__file__))  # 获取当前文件的目录
-    start_script_path = os.path.join(script_dir, "start_app.sh")  # 构造完整路径
-
-    # 创建 AppleScript 命令
-    applescript_command = f"""
-    do shell script "/bin/bash '{start_script_path}' '{current_app_path}'"
-    """
-
-    # 使用 subprocess 执行 AppleScript
-    subprocess.run(["osascript", "-e", applescript_command])
-
-    # 退出当前应用
+    os.execl(sys.executable, sys.executable, *sys.argv)
     sys.exit()
