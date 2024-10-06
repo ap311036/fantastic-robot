@@ -23,7 +23,7 @@ fi
 
 echo "Latest ZIP URL: $ZIP_URL"
 
-echo "Downloading $APP_NAME..."s
+echo "Downloading $APP_NAME..."
 
 # 下載 ZIP 文件到暫存目錄
 curl -L -o "$TEMP_DIR.zip" "$ZIP_URL"
