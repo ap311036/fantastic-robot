@@ -2,14 +2,28 @@
 
 # 設定變數
 APP_NAME="fantastic-robot"  # 你的應用名稱
-ZIP_URL="https://github.com/ap311036/fantastic-robot/releases/download/v1.0.0/fantastic-robot.app.zip"  # 你的 ZIP 文件下載 URL
 DEST_DIR="$HOME/Applications"  # 安裝目標目錄
 TEMP_DIR="/tmp/$APP_NAME"  # 暫存解壓目錄
 
 echo "This script requires administrator privileges to install the app."
 sudo -v  # 提前要求用戶輸入密碼來保持會話有效
 
-echo "Downloading $APP_NAME..."
+echo "Fetching the latest release information..."
+
+# 使用 GitHub API 獲取最新版本信息
+LATEST_RELEASE=$(curl -s https://api.github.com/repos/ap311036/fantastic-robot/releases/latest)
+
+# 提取 ZIP 文件的下載 URL
+ZIP_URL=$(echo "$LATEST_RELEASE" | grep -o "https://.*\.zip" | head -n 1)
+
+if [ -z "$ZIP_URL" ]; then
+    echo "Failed to get the latest ZIP URL. Exiting."
+    exit 1
+fi
+
+echo "Latest ZIP URL: $ZIP_URL"
+
+echo "Downloading $APP_NAME..."s
 
 # 下載 ZIP 文件到暫存目錄
 curl -L -o "$TEMP_DIR.zip" "$ZIP_URL"
