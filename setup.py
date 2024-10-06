@@ -1,4 +1,3 @@
-from struct import pack
 from setuptools import setup, find_packages
 from datetime import datetime
 from config import CURRENT_VERSION
@@ -17,6 +16,7 @@ DATA_FILES = [
     "./check_update/check_update.py",
     "./utils/utils.py",
     "./config.py",
+    "./start_app.sh"
 ]  # 自定義的模組放在 DATA_FILES 列表中
 OPTIONS = {
     "argv_emulation": False,
@@ -46,6 +46,7 @@ OPTIONS = {
 
 setup(
     app=APP,
+    name="fantastic-robot",
     data_files=DATA_FILES,
     packages=find_packages(),
     options={"py2app": OPTIONS},
